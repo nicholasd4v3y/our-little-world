@@ -1,0 +1,179 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(#ffe6e6, #fff);
+    text-align: center;
+    padding: 40px;
+}
+
+.center {
+    margin-top: 100px;
+}
+
+button {
+    padding: 15px 25px;
+    font-size: 16px;
+    border: none;
+    background: #ff6f91;
+    color: white;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+button:hover {
+    transform: scale(1.1);
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 80px);
+    gap: 10px;
+    justify-content: center;
+    margin-top: 40px;
+}
+
+.grid div {
+    background: #ffd1dc;
+    font-size: 30px;
+    padding: 20px;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+.gallery, .cards {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 40px;
+}
+
+.gallery div, .cards div {
+    background: #ffc2d1;
+    padding: 30px;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+body::after {
+    content: "🎆 🎉 ✨ 💖";
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    font-size: 24px;
+}
+
+#passwordScreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  text-align: center;
+}
+
+#passwordScreen h1 {
+  color: white;
+  margin-bottom: 10px;
+}
+
+#passwordScreen .hint {
+  color: white;
+  font-size: 0.95em;
+  margin-bottom: 20px;
+  opacity: 0.9;
+}
+
+#passwordScreen input {
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  text-align: center;
+  font-size: 1em;
+  margin-bottom: 15px;
+  width: 220px;
+}
+
+#passwordScreen button {
+  padding: 10px 25px;
+  border: none;
+  border-radius: 10px;
+  background: white;
+  color: #ff6f91;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#passwordScreen button:hover {
+  transform: scale(1.05);
+}
+
+#errorText {
+  margin-top: 10px;
+  color: white;
+  font-size: 0.9em;
+}
+
+.my-wish {
+  max-width: 700px;
+  margin: 0 auto;
+  font-size: 1.15em;
+  line-height: 1.8;
+  text-align: center;
+  color: #444;
+  background: rgba(255, 255, 255, 0.6);
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  white-space: pre-line;
+}
+.hearts-container {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.heart {
+  position: absolute;
+  bottom: -20px;
+  font-size: 20px;
+  animation: floatUp linear infinite;
+  opacity: 0.7;
+}
+
+@keyframes floatUp {
+  from {
+    transform: translateY(0) scale(1);
+    opacity: 0.8;
+  }
+  to {
+    transform: translateY(-110vh) scale(1.3);
+    opacity: 0;
+  }
+}
+.my-wish {
+  position: relative;
+  z-index: 2;
+  max-width: 700px;
+  margin: 80px auto;
+  padding: 30px;
+  background: rgba(255,255,255,0.75);
+  backdrop-filter: blur(6px);
+  border-radius: 20px;
+  font-size: 1.1em;
+  line-height: 1.8;
+  color: #444;
+  white-space: pre-line;
+}
+#savedWishText {
+  font-size: 1.1em;
+  line-height: 1.8;
+  margin: 20px 0;
+  color: #444;
+}
