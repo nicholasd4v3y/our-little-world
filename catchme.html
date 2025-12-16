@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Catch Me 💞</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+  margin:0;
+  font-family:'Segoe UI',sans-serif;
+  background:linear-gradient(#eaf6ff,#fff);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+
+header{
+  text-align:center;
+  padding:16px;
+}
+header h1{color:#ff5b8a;margin:4px}
+header p{font-size:0.9em;opacity:.8}
+
+#game{
+  position:relative;
+  width:320px;
+  height:420px;
+  background:linear-gradient(#dff3ff,#ffffff);
+  border:5px solid #ffd1e1;
+  border-radius:20px;
+  overflow:hidden;
+}
+
+/* characters */
+.char{
+  position:absolute;
+  width:34px;
+  height:34px;
+  border-radius:50%;
+  background-size:cover;
+}
+
+#bul{background-image:url('assets/images/bul.jpg')}
+#dave{background-image:url('assets/images/dave.jpg')}
+
+/* obstacle */
+.obs{
+  position:absolute;
+  background:#ffd6e7;
+  border-radius:10px;
+}
+
+/* UI */
+#overlay{
+  position:absolute;
+  inset:0;
+  background:rgba(255,255,255,.9);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  z-index:10;
+}
+
+button{
+  border:none;
+  padding:12px 22px;
+  border-radius:20px;
+  background:#ff6f91;
+  color:white;
+  font-size:1em;
+}
+
+#joystick{
+  margin:14px;
+  width:120px;
+  height:120px;
+  background:#ffe0ec;
+  border-radius:50%;
+  position:relative;
+}
+#stick{
+  width:46px;height:46px;
+  background:#ff6f91;
+  border-radius:50%;
+  position:absolute;
+  top:37px;left:37px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>💞 Catch Me!</h1>
+<p>BUL kejar DAVE… kalau ketangkap, peluk 🤍</p>
+</header>
+
+<div id="game">
+  <div id="overlay">
+    <button id="startBtn">PELUK! 🤍</button>
+  </div>
+
+  <div id="bul" class="char"></div>
+  <div id="dave" class="char"></div>
+</div>
+
+<div id="joystick"><div id="stick"></div></div>
+
+<script>
+/* ===== BASIC ===== */
+const game=document.getElementById("game");
+const bul=document.getElementById("bul");
+const dave=document.getElementById("dave");
+const overlay=document.getElementById("overlay");
+
+let bw=34, bh=34;
+let px,py, dx=0,dy=0;
+let ax,ay;
+let playing=false;
+
+/* ===== OBSTACLES ===== */
+const obstacles=[];
+for(let i=0;i<7;i++){
+  const o=document.createElement("div");
+  o.className="obs";
+  o.w=30+Math.random()*20;
+  o.h=20+Math.random()*20;
+  o.style.width=o.w+"px";
+  o.style.height=o.h+"px";
+  o.x=20+Math.random()*260;
+  o.y=40+Math.random()*300;
+  o.style.left=o.x+"px";
+  o.style.top=o.y+"px";
+  game.appendChild(o);
+  obstacles.push(o);
+}
+
+/* ===== START ===== */
+document.getElementById("startBtn").onclick=()=>{
+  px=40; py=300;
+  ax=240; ay=60;
+  playing=true;
+  overlay.style.display="none";
+};
+
+/* ===== KEYBOARD ===== */
+document.addEventListener("keydown",e=>{
+  if(!playing) return;
+  if(e.key==="ArrowUp"||e.key==="w") dy=-1;
+  if(e.key==="ArrowDown"||e.key==="s") dy=1;
+  if(e.key==="ArrowLeft"||e.key==="a") dx=-1;
+  if(e.key==="ArrowRight"||e.key==="d") dx=1;
+});
+document.addEventListener("keyup",()=>dx=dy=0);
+
+/* ===== JOYSTICK ===== */
+const joy=document.getElementById("joystick");
+const stick=document.getElementById("stick");
+
+joy.addEventListener("touchmove",e=>{
+  const r=joy.getBoundingClientRect();
+  const x=e.touches[0].clientX-r.left-60;
+  const y=e.touches[0].clientY-r.top-60;
+  const d=Math.min(40,Math.hypot(x,y));
+  const a=Math.atan2(y,x);
+  dx=Math.cos(a);
+  dy=Math.sin(a);
+  stick.style.left=60+Math.cos(a)*d-23+"px";
+  stick.style.top=60+Math.sin(a)*d-23+"px";
+});
+joy.addEventListener("touchend",()=>{
+  dx=dy=0;
+  stick.style.left="37px";
+  stick.style.top="37px";
+});
+
+/* ===== COLLISION ===== */
+function hit(x,y){
+  for(const o of obstacles){
+    if(x<bw+o.x&&x+bw>o.x&&y<bh+o.y&&y+bh>o.y) return true;
+  }
+  return false;
+}
+
+/* ===== LOOP ===== */
+function loop(){
+  if(!playing) return requestAnimationFrame(loop);
+
+  // BUL move
+  let nx=px+dx*2;
+  let ny=py+dy*2;
+  if(!hit(nx,py)) px=nx;
+  if(!hit(px,ny)) py=ny;
+
+  // DAVE AI flee
+  let vx=ax-px;
+  let vy=ay-py;
+  let len=Math.hypot(vx,vy)||1;
+  vx/=len; vy/=len;
+  ax+=vx*1.6 + (Math.random()-.5)*0.5;
+  ay+=vy*1.6 + (Math.random()-.5)*0.5;
+
+  ax=Math.max(0,Math.min(286,ax));
+  ay=Math.max(0,Math.min(386,ay));
+
+  bul.style.left=px+"px";
+  bul.style.top=py+"px";
+  dave.style.left=ax+"px";
+  dave.style.top=ay+"px";
+
+  // catch
+  if(Math.hypot(px-ax,py-ay)<26){
+    overlay.innerHTML="<h2>🤍 Peluk 🤍</h2><button onclick='location.reload()'>Replay</button>";
+    overlay.style.display="flex";
+    playing=false;
+  }
+
+  requestAnimationFrame(loop);
+}
+loop();
+</script>
+
+</body>
+</html>

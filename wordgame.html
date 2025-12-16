@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Mini Game 💖</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body{margin:0; font-family:'Segoe UI',sans-serif; background:linear-gradient(120deg,#ffe0ec,#fff5f8); color:#333; text-align:center;}
+h1{color:#ff4b6e; margin-top:30px;}
+#gameContainer{margin:30px auto; max-width:400px;}
+input{padding:10px; font-size:1em; width:60%; border-radius:8px; border:1px solid #ddd; text-align:center;}
+button{padding:10px 20px; border:none; border-radius:8px; background:#ff6f91; color:white; font-size:1em; cursor:pointer; margin-left:10px;}
+button:hover{transform:scale(1.05);}
+#guesses{margin-top:20px; display:flex; flex-direction:column; gap:5px;}
+.guess{display:flex; justify-content:center; gap:5px;}
+.letter{width:40px; height:40px; display:flex; align-items:center; justify-content:center; border:1px solid #ddd; border-radius:5px; font-weight:bold; font-size:1.2em; text-transform:uppercase;}
+.correct{background:#4CAF50; color:white;}
+.misplaced{background:#FFC107; color:white;}
+.wrong{background:#ddd; color:#666;}
+#message{margin-top:20px; font-weight:bold; color:#ff4b6e;}
+.backBtn{margin-top:30px; display:inline-block; padding:12px 28px; border:none; border-radius:25px; background:#ff6f91; color:white; font-size:1em; cursor:pointer;}
+.backBtn:hover{transform:scale(1.05);}
+</style>
+</head>
+<body>
+
+<script>
+if(sessionStorage.getItem("accessGranted")!=="true"){
+    window.location.href="index.html";
+}
+</script>
+
+<h1>💖 Mini Word Game</h1>
+<p>Guess the 4-letter secret word!</p>
+
+<div id="gameContainer">
+  <input type="text" id="guessInput" maxlength="4" placeholder="Your guess">
+  <button onclick="makeGuess()">Guess 💌</button>
+  <div id="guesses"></div>
+  <div id="message"></div>
+</div>
+
+<a href="minigame.html"><button class="backBtn">← Back to Mini Games</button></a>
+
+<script>
+const SECRET_WORD = "LOVE";
+let attempts = 0;
+const maxAttempts = 6;
+
+function makeGuess(){
+  const input = document.getElementById("guessInput");
+  const guess = input.value.toUpperCase();
+  const message = document.getElementById("message");
+  if(guess.length!==SECRET_WORD.length){message.innerText="Please enter 4 letters!"; return;}
+  
+  attempts++;
+  const row = document.createElement("div");
+  row.className="guess";
+
+  for(let i=0;i<SECRET_WORD.length;i++){
+    const box = document.createElement("div");
+    box.className="letter";
+    box.innerText = guess[i];
+    if(guess[i]===SECRET_WORD[i]) box.classList.add("correct");
+    else if(SECRET_WORD.includes(guess[i])) box.classList.add("misplaced");
+    else box.classList.add("wrong");
+    row.appendChild(box);
+  }
+  document.getElementById("guesses").appendChild(row);
+  input.value="";
+
+  if(guess===SECRET_WORD){
+    message.innerText=`🎉 You guessed it! LOVE wins!`;
+    input.disabled=true;
+  } else if(attempts>=maxAttempts){
+    message.innerText=`❌ Out of attempts! The word was "${SECRET_WORD}"`;
+    input.disabled=true;
+  } else{
+    message.innerText=`Attempt ${attempts} of ${maxAttempts}`;
+  }
+}
+</script>
+
+</body>
+</html>

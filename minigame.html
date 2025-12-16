@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Mini Games 💖</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body{
+  margin:0; font-family:'Segoe UI',sans-serif;
+  background: linear-gradient(120deg,#ffe0ec,#fff5f8);
+  color:#333; text-align:center;
+}
+h1{
+  color:#ff4b6e; margin-top:30px;
+}
+.menu-container{
+  margin-top:50px;
+  display:flex; flex-direction:column; gap:25px; align-items:center;
+}
+button{
+  padding:15px 35px; border:none; border-radius:25px;
+  background:#ff6f91; color:white; font-size:1.1em; cursor:pointer;
+  transition: all 0.2s ease;
+}
+button:hover{
+  transform:scale(1.05);
+}
+.backBtn{
+  display:block; margin:40px auto; padding:12px 28px; border:none;
+  border-radius:25px; background:#ff6f91; color:white; font-size:1em; cursor:pointer;
+}
+.backBtn:hover{transform:scale(1.05);}
+</style>
+</head>
+<body>
+
+<script>
+if(sessionStorage.getItem("accessGranted")!=="true"){
+    window.location.href="index.html";
+}
+</script>
+
+<h1>💖 Mini Games Hub</h1>
+<p>Choose your game and have fun! 🎮</p>
+
+<div class="menu-container">
+  <button onclick="location.href='wordgame.html'">Word Puzzle 💌</button>
+  <button onclick="location.href='lovemaze.html'">Love Maze 💖</button>
+  <button onclick="location.href='memorygame.html'">Memory Card Game 🎴</button>
+  <button onclick="location.href='catchme.html'">Catch Me = Hug Me 🏃‍♀️</button>
+</div>
+
+<a href="menu.html"><button class="backBtn">← Back to Menu</button></a>
+
+</body>
+</html>

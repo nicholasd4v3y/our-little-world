@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Our Little World 💖</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+  margin:0;
+  font-family:'Segoe UI',sans-serif;
+  background:linear-gradient(120deg,#ffe0ec,#fff5f8);
+  color:#333;
+  overflow-x:hidden;
+}
+
+/* ===== HEADER ===== */
+header{
+  text-align:center;
+  padding:28px 16px 12px;
+}
+header h1{
+  color:#ff4b6e;
+  font-size:1.9em;
+  margin-bottom:6px;
+}
+header p{
+  font-size:0.9em;
+  opacity:0.8;
+}
+
+/* ===== MENU GRID ===== */
+.menu{
+  max-width:900px;
+  margin:10px auto 10px;
+  padding:10px 20px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+  gap:22px;
+}
+
+.menu-card{
+  background:white;
+  border-radius:26px;
+  padding:26px 18px;
+  text-decoration:none;
+  color:#333;
+  text-align:center;
+  box-shadow:0 12px 30px rgba(0,0,0,0.12);
+  transition:all 0.35s ease;
+  position:relative;
+}
+
+.menu-card:hover{
+  transform:translateY(-8px) scale(1.04);
+  box-shadow:0 20px 40px rgba(0,0,0,0.25);
+}
+
+.menu-card .icon{
+  font-size:2.2em;
+  margin-bottom:10px;
+}
+
+.menu-card h2{
+  font-size:1.05em;
+  margin:0;
+}
+
+.menu-card span{
+  font-size:0.8em;
+  opacity:0.7;
+  display:block;
+  margin-top:6px;
+}
+
+/* ===== LOVE TAP ===== */
+.love-tap-container{
+  text-align:center;
+  margin:16px 0 28px;
+}
+
+.love-text{
+  font-size:0.95em;
+  color:#ff4b6e;
+  margin-bottom:8px;
+}
+
+#loveTapImg{
+  width:110px;
+  height:110px;
+  border-radius:50%;
+  object-fit:cover;
+  cursor:pointer;
+  box-shadow:0 8px 18px rgba(0,0,0,0.2);
+  transition:transform 0.15s ease;
+}
+
+#loveTapImg:active{
+  transform:scale(0.9);
+}
+
+.progress-bar{
+  width:200px;
+  height:10px;
+  background:#ffe0ec;
+  border-radius:10px;
+  margin:10px auto 6px;
+  overflow:hidden;
+}
+
+.progress-fill{
+  height:100%;
+  width:0%;
+  background:linear-gradient(90deg,#ff6f91,#ff4b6e);
+  transition:width 0.2s ease;
+}
+
+.progress-text{
+  font-size:0.8em;
+  color:#666;
+}
+
+.love-result{
+  margin-top:6px;
+  color:#ff4b6e;
+  font-weight:600;
+  font-size:0.85em;
+  min-height:20px;
+}
+
+/* ===== FLOATING HEARTS ===== */
+.heart{
+  position:fixed;
+  bottom:-10px;
+  color:rgba(255,105,180,0.45);
+  font-size:16px;
+  animation:floatUp linear infinite;
+  pointer-events:none;
+}
+@keyframes floatUp{
+  from{transform:translateY(0);opacity:1;}
+  to{transform:translateY(-110vh);opacity:0;}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>💖 Our Little 2025 World 💖</h1>
+  <p>A place made from memories, wishes, and us</p>
+</header>
+
+<section class="menu">
+  <a class="menu-card" href="wishes.html">
+    <div class="icon">💌</div>
+    <h2>Our Wishes</h2>
+    <span>Words we keep for each other</span>
+  </a>
+
+  <a class="menu-card" href="scrapbook.html">
+    <div class="icon">📸</div>
+    <h2>Scrapbook</h2>
+    <span>Moments we never want to forget</span>
+  </a>
+
+  <a class="menu-card" href="minigame.html">
+    <div class="icon">🎮</div>
+    <h2>Mini Games</h2>
+    <span>Just for fun, just for us</span>
+  </a>
+
+  <a class="menu-card" href="quotes.html">
+    <div class="icon">💖</div>
+    <h2>Movie Quotes</h2>
+    <span>Lines that feel like us</span>
+  </a>
+</section>
+
+<!-- LOVE TAP DI BAWAH MENU -->
+<div class="love-tap-container">
+  <p class="love-text">Tap Tap if you Love me 🤍</p>
+
+  <img src="assets/images/dave2.jpg" id="loveTapImg" alt="Tap Me">
+
+  <div class="progress-bar">
+    <div class="progress-fill" id="progressFill"></div>
+  </div>
+
+  <p class="progress-text" id="progressText">0%</p>
+  <p class="love-result" id="loveResult"></p>
+</div>
+
+<script>
+/* FLOATING HEARTS */
+function createHeart(){
+  const heart=document.createElement("div");
+  heart.className="heart";
+  heart.innerHTML="💗";
+  heart.style.left=Math.random()*100+"vw";
+  heart.style.animationDuration=4+Math.random()*4+"s";
+  document.body.appendChild(heart);
+  setTimeout(()=>heart.remove(),8000);
+}
+setInterval(createHeart,600);
+
+/* LOVE TAP */
+let taps = 0;
+const maxTaps = 50;
+
+const img = document.getElementById("loveTapImg");
+const progressFill = document.getElementById("progressFill");
+const progressText = document.getElementById("progressText");
+const loveResult = document.getElementById("loveResult");
+
+img.addEventListener("click", () => {
+  if (taps >= maxTaps) return;
+
+  taps++;
+  const percent = Math.floor((taps / maxTaps) * 100);
+
+  progressFill.style.width = percent + "%";
+  progressText.innerText = percent + "%";
+
+  img.style.transform = "scale(0.92)";
+  setTimeout(() => img.style.transform = "scale(1)", 120);
+
+  if (taps === maxTaps) {
+    loveResult.innerText = "Sakit tau ditekenin. Tapi love love 🤍";
+    burstHearts();
+  }
+});
+
+function burstHearts(){
+  for(let i=0;i<20;i++){
+    setTimeout(() => {
+      const heart=document.createElement("div");
+      heart.className="heart";
+      heart.innerHTML="💖";
+      heart.style.left=Math.random()*100+"vw";
+      heart.style.fontSize=16+Math.random()*18+"px";
+      heart.style.animationDuration=3+Math.random()*2+"s";
+      document.body.appendChild(heart);
+      setTimeout(()=>heart.remove(),6000);
+    }, i*90);
+  }
+}
+</script>
+
+</body>
+</html>

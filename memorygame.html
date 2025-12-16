@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Memory Card Game 🎴</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body{
+  font-family:'Segoe UI',sans-serif;
+  background: linear-gradient(120deg,#ffe0ec,#fff5f8);
+  margin:0; text-align:center;
+}
+h1{color:#ff4b6e; margin-top:20px;}
+#gameBoard{
+  display:grid; grid-template-columns:repeat(4,80px); grid-gap:15px;
+  justify-content:center; margin-top:30px;
+}
+.card{
+  width:80px; height:80px; background:#ffb6c1; border-radius:15px;
+  display:flex; align-items:center; justify-content:center; font-size:2em; cursor:pointer;
+  transition: transform 0.3s;
+}
+.card.flipped{background:#ff4b6e; color:white; transform:rotateY(180deg);}
+.backBtn{
+  margin-top:30px; padding:12px 28px; border:none; border-radius:25px;
+  background:#ff6f91; color:white; cursor:pointer;
+}
+</style>
+</head>
+<body>
+
+<h1>🎴 Memory Card Game</h1>
+<div id="gameBoard"></div>
+<button class="backBtn" onclick="location.href='minigame.html'">← Back to Mini Games</button>
+
+<script>
+if(sessionStorage.getItem("accessGranted")!=="true"){
+  window.location.href="index.html";
+}
+
+const icons=["💖","💌","🌹","🌟","🎁","🎶","🍫","🥰"];
+let cards=[...icons,...icons]; // duplicate for pairs
+cards.sort(()=>0.5-Math.random());
+
+const board=document.getElementById("gameBoard");
+let flipped=[];
+let matched=0;
+
+cards.forEach((icon,index)=>{
+  const card=document.createElement("div");
+  card.className="card";
+  card.dataset.icon=icon;
+  card.addEventListener("click",()=>flipCard(card));
+  board.appendChild(card);
+});
+
+function flipCard(card){
+  if(flipped.length<2 && !card.classList.contains("flipped")){
+    card.classList.add("flipped");
+    card.textContent=card.dataset.icon;
+    flipped.push(card);
+
+    if(flipped.length===2){
+      setTimeout(checkMatch,500);
+    }
+  }
+}
+
+function checkMatch(){
+  const [c1,c2]=flipped;
+  if(c1.dataset.icon===c2.dataset.icon){
+    matched+=2;
+    flipped=[];
+    if(matched===cards.length){
+      setTimeout(()=>alert("🎉 You found all matches! Love wins! 💖"),200);
+    }
+  } else {
+    c1.classList.remove("flipped"); c1.textContent="";
+    c2.classList.remove("flipped"); c2.textContent="";
+    flipped=[];
+  }
+}
+</script>
+
+</body>
+</html>

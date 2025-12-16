@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Love Maze 💖</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body {
+  font-family:'Segoe UI',sans-serif;
+  background: linear-gradient(120deg,#ffe0ec,#fff5f8);
+  display:flex; flex-direction:column; align-items:center;
+  min-height:100vh; margin:0; padding-top:20px;
+  overflow-x:hidden;
+}
+h1 { color:#ff4b6e; margin-bottom:20px; text-align:center; }
+
+/* Maze container */
+#mazeContainer {
+  position:relative;
+  width:480px; height:480px;
+  border:3px solid #ff6f91;
+  background:#fff0f5;
+}
+
+/* Cells */
+.cell {
+  position:absolute;
+  width:40px; height:40px;
+  box-sizing:border-box;
+  border:1px solid #ffb6c1;
+  transition:background 0.2s;
+}
+.cell.wall { background:#ffb6c1; }
+.cell.path { background:#fff0f5; }
+.cell.start { background:#ff9fcf; border-radius:50%; }
+.cell.finish { background:#ff4b6e; border-radius:50%; }
+
+/* Player */
+.player {
+  position:absolute;
+  width:40px; height:40px;
+  transition: all 0.1s linear;
+  z-index:5;
+  border-radius:50%;
+}
+
+/* Trail */
+.trail {
+  position:absolute;
+  width:40px; height:40px;
+  background: rgba(255,105,180,0.3);
+  border-radius:50%;
+  z-index:1;
+}
+
+/* Floating Hearts */
+.heart {
+  position:fixed;
+  bottom:-20px;
+  color: rgba(255,105,180,0.6);
+  font-size:20px;
+  animation: floatUp linear infinite;
+  pointer-events:none;
+  z-index:0;
+}
+@keyframes floatUp {
+  0% { transform: translateY(0) scale(1); opacity:1; }
+  100% { transform: translateY(-110vh) scale(1.5); opacity:0; }
+}
+
+/* Controls */
+#controls { margin-top:20px; display:flex; flex-direction:column; align-items:center; gap:5px; }
+#controlsRow { display:flex; gap:10px; }
+#controls button {
+  padding:12px 18px; font-size:20px; border:none; border-radius:10px; background:#ff6f91; color:white; cursor:pointer;
+}
+
+.backBtn {
+  margin-top:30px; padding:12px 28px; border:none; border-radius:25px;
+  background:#ff6f91; color:white; cursor:pointer;
+}
+</style>
+</head>
+<body>
+
+<h1>💖 Love Maze</h1>
+<div id="mazeContainer"></div>
+
+<!-- Controls for touch devices -->
+<div id="controls">
+  <button onclick="move('up')">⬆</button>
+  <div id="controlsRow">
+    <button onclick="move('left')">⬅</button>
+    <button onclick="move('down')">⬇</button>
+    <button onclick="move('right')">➡</button>
+  </div>
+</div>
+
+<button class="backBtn" onclick="location.href='minigame.html'">← Back to Mini Games</button>
+
+<script>
+// Maze map (0=path,1=wall)
+const mazeData=[
+[0,0,1,0,0,0,1,0,0,0,1,0],
+[1,0,1,0,1,0,1,0,1,0,1,0],
+[0,0,1,0,1,0,1,0,1,0,0,0],
+[0,1,1,0,1,1,1,0,1,1,1,0],
+[0,0,0,0,0,0,0,0,0,0,1,0],
+[1,0,1,1,1,0,1,1,1,1,1,1],
+[0,0,1,0,1,0,0,0,0,0,1,0],
+[0,1,1,0,1,1,1,0,1,0,1,0],
+[0,0,1,0,0,0,0,0,1,0,0,0],
+[1,1,1,0,1,1,1,1,1,1,1,0],
+[0,0,0,0,1,0,0,0,0,0,1,1],
+[0,1,1,0,0,0,1,1,1,0,0,0]
+];
+
+const gridSizeY = mazeData.length;
+const gridSizeX = mazeData[0].length;
+const cellSize = 40;
+const container = document.getElementById("mazeContainer");
+
+// Draw maze
+for(let y=0;y<gridSizeY;y++){
+  for(let x=0;x<gridSizeX;x++){
+    const cell=document.createElement("div");
+    cell.className="cell "+(mazeData[y][x]===1?"wall":"path");
+    if(x===0 && y===0) cell.classList.add("start");
+    if(x===gridSizeX-1 && y===gridSizeY-1) cell.classList.add("finish");
+    cell.style.left=x*cellSize+"px";
+    cell.style.top=y*cellSize+"px";
+    container.appendChild(cell);
+  }
+}
+
+// Finish Image
+const finishImg=document.createElement("img");
+finishImg.src="assets/images/dave.jpg";
+finishImg.style.position="absolute";
+finishImg.style.width=cellSize+"px";
+finishImg.style.height=cellSize+"px";
+finishImg.style.left=(gridSizeX-1)*cellSize+"px";
+finishImg.style.top=(gridSizeY-1)*cellSize+"px";
+finishImg.style.borderRadius="50%";
+finishImg.style.zIndex=4;
+container.appendChild(finishImg);
+
+// Player & trail
+let playerPos={x:0,y:0};
+const finishPos={x:gridSizeX-1,y:gridSizeY-1};
+const player=document.createElement("img");
+player.src="assets/images/bul.jpg"; // pacar
+player.className="player";
+player.style.width=cellSize+"px";
+player.style.height=cellSize+"px";
+container.appendChild(player);
+player.style.left=playerPos.x*cellSize+"px";
+player.style.top=playerPos.y*cellSize+"px";
+
+function addTrail(){
+  const t=document.createElement("div");
+  t.className="trail";
+  t.style.left=playerPos.x*cellSize+"px";
+  t.style.top=playerPos.y*cellSize+"px";
+  container.appendChild(t);
+}
+
+// Move function
+function move(dir){
+  let nx=playerPos.x;
+  let ny=playerPos.y;
+  switch(dir){
+    case 'up': ny--; break;
+    case 'down': ny++; break;
+    case 'left': nx--; break;
+    case 'right': nx++; break;
+  }
+  if(nx>=0 && nx<gridSizeX && ny>=0 && ny<gridSizeY && mazeData[ny][nx]===0){
+    addTrail();
+    playerPos={x:nx,y:ny};
+    player.style.left=nx*cellSize+"px";
+    player.style.top=ny*cellSize+"px";
+  }
+  // Finish
+  if(playerPos.x===finishPos.x && playerPos.y===finishPos.y){
+    setTimeout(()=>{
+      alert("🎉 You reached me! 💖 Love wins! Hugggg!!! ");
+    },100);
+  }
+}
+
+// Arrow keys
+document.addEventListener("keydown",(e)=>{
+  switch(e.key){
+    case "ArrowUp": move('up'); break;
+    case "ArrowDown": move('down'); break;
+    case "ArrowLeft": move('left'); break;
+    case "ArrowRight": move('right'); break;
+  }
+});
+
+// On-screen buttons
+window.move=move;
+
+// Floating hearts
+function createHeart(){
+  const heart=document.createElement("div");
+  heart.className="heart";
+  heart.innerHTML="💗";
+  heart.style.left=Math.random()*100+"vw";
+  heart.style.animationDuration=4+Math.random()*4+"s";
+  heart.style.fontSize=16+Math.random()*20+"px";
+  document.body.appendChild(heart);
+  setTimeout(()=>heart.remove(),10000);
+}
+setInterval(createHeart,400);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Scrapbook 💖</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(120deg, #ffe0ec, #fff5f8);
+  color: #333;
+  overflow-x: hidden;
+}
+
+/* Floating Hearts */
+.heart {
+  position: fixed;
+  bottom: -10px;
+  color: rgba(255, 105, 180, 0.6);
+  font-size: 20px;
+  animation: floatUp linear infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+@keyframes floatUp {
+  from { transform: translateY(0) scale(1); opacity: 1; }
+  to { transform: translateY(-110vh) scale(1.5); opacity: 0; }
+}
+
+/* Scrapbook container */
+.container {
+  max-width: 1000px;
+  margin: auto;
+  padding: 30px 20px;
+  text-align: center;
+}
+h1 { color: #ff4b6e; margin-bottom: 40px; }
+.scrap-journey { margin-bottom: 50px; }
+.scrap-journey h2 { margin-bottom: 20px; color: #ff4b6e; }
+
+.photo-row {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+.scrap-card {
+  width: 180px;
+  height: 180px;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.3s;
+}
+.scrap-card img { width: 100%; height: 100%; object-fit: cover; }
+.scrap-card:hover { transform: scale(1.05) rotate(-1deg); }
+
+/* Popup */
+.popup {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+.popup-box {
+  background: white;
+  padding: 20px;
+  border-radius: 15px;
+  max-width: 90%;
+  max-height: 90%;
+  text-align: center;
+  position: relative;
+}
+.popup-box img { max-width: 100%; max-height: 60vh; border-radius: 10px; }
+.popup-box p { margin-top: 10px; font-size: 1em; color: #ff4b6e; }
+.popup-box button {
+  margin: 5px;
+  padding: 8px 16px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  background: #ff6f91;
+  color: white;
+  font-weight: bold;
+}
+.back-menu {
+  margin-top: 30px;
+  display: inline-block;
+  text-decoration: none;
+  color: #ff4b6e;
+  font-weight: bold;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>💖 Our Scrapbook</h1>
+
+  <!-- Journey Array -->
+  <div class="scrap-journey">
+    <h2>Elle's Birthday 🎉</h2>
+    <div class="photo-row">
+      <div class="scrap-card" onclick="openPopup(
+        ['assets/images/elle1.jpg','assets/images/elle2.jpg','assets/images/elle3.jpg'],
+        'Elle\'s Birthday — A day full of smiles and love! 💖'
+      )"><img src="assets/images/elle1.jpg" alt="Elle Birthday"></div>
+      <div class="scrap-card" onclick="openPopup(
+        ['assets/images/elle2.jpg','assets/images/elle3.jpg','assets/images/elle1.jpg',],
+        'Elle\'s Birthday — A day full of smiles and love! 💖'
+      )"><img src="assets/images/elle2.jpg" alt="Elle Birthday"></div>
+      <div class="scrap-card" onclick="openPopup(
+        ['assets/images/elle3.jpg','assets/images/elle1.jpg','assets/images/elle2.jpg',],
+        'Elle\'s Birthday — A day full of smiles and love! 💖'
+      )"><img src="assets/images/elle3.jpg" alt="Elle Birthday"></div>
+    </div>
+  </div>
+
+  <div class="scrap-journey">
+    <h2>Majalengka Trip 🏞️</h2>
+    <div class="photo-row">
+      <div class="scrap-card" onclick="openPopup(
+        ['assets/images/majalengka1.jpg','assets/images/majalengka2.jpg','assets/images/majalengka3.jpg'],
+        'Trip to Majalengka — Amazing memories and laughter 💖'
+      )"><img src="assets/images/majalengka1.jpg" alt="Majalengka"></div>
+      <div class="scrap-card" onclick="openPopup(
+        ['assets/images/majalengka2.jpg','assets/images/majalengka3.jpg', 'assets/images/majalengka1.jpg'],
+        'Trip to Majalengka — Amazing memories and laughter 💖'
+      )"><img src="assets/images/majalengka2.jpg" alt="Majalengka"></div>
+      <div class="scrap-card" onclick="openPopup(
+        ['assets/images/majalengka3.jpg','assets/images/majalengka1.jpg','assets/images/majalengka2.jpg'],
+        'Trip to Majalengka — Amazing memories and laughter 💖'
+      )"><img src="assets/images/majalengka3.jpg" alt="Majalengka"></div>
+    </div>
+  </div>
+
+  <div class="scrap-journey">
+    <h2>Anniversary ❤️</h2>
+    <div class="photo-row">
+      <div class="scrap-card" onclick="openPopup(
+        ['assets/images/anniversary1.jpg','assets/images/anniversary2.jpg','assets/images/anniversary3.jpg'],
+        'Anniversary — Love and memories together 💖'
+      )"><img src="assets/images/anniversary1.jpg" alt="Anniversary"></div>
+      <div class="scrap-card" onclick="openPopup(
+        ['assets/images/anniversary2.jpg','assets/images/anniversary3.jpg','assets/images/anniversary1.jpg'],
+        'Anniversary — Love and memories together 💖'
+      )"><img src="assets/images/anniversary2.jpg" alt="Anniversary"></div>
+      <div class="scrap-card" onclick="openPopup(
+        ['assets/images/anniversary3.jpg', 'assets/images/anniversary1.jpg','assets/images/anniversary2.jpg'],
+        'Anniversary — Love and memories together 💖'
+      )"><img src="assets/images/anniversary3.jpg" alt="Anniversary"></div>
+    </div>
+  </div>
+
+  <div class="scrap-journey">
+    <h2>Your Birthday 🎂</h2>
+    <div class="photo-row">
+      <div class="scrap-card" onclick="openPopup(
+        ['assets/images/yourbday1.jpg','assets/images/yourbday2.jpg','assets/images/yourbday3.jpg'],
+        'Your Birthday — Happy moments together 💖'
+      )"><img src="assets/images/yourbday1.jpg" alt="Your Birthday"></div>
+      <div class="scrap-card" onclick="openPopup(
+        ['assets/images/yourbday2.jpg','assets/images/yourbday3.jpg','assets/images/yourbday1.jpg',],
+        'Your Birthday — Happy moments together 💖'
+      )"><img src="assets/images/yourbday2.jpg" alt="Your Birthday"></div>
+      <div class="scrap-card" onclick="openPopup(
+        ['assets/images/yourbday3.jpg','assets/images/yourbday1.jpg','assets/images/yourbday2.jpg'],
+        'Your Birthday — Happy moments together 💖'
+      )"><img src="assets/images/yourbday3.jpg" alt="Your Birthday"></div>
+    </div>
+  </div>
+
+  <div class="scrap-journey">
+    <h2>Trip Oktober 🍂</h2>
+    <div class="photo-row">
+      <div class="scrap-card" onclick="openPopup(
+        ['assets/images/tripokt1.jpg','assets/images/tripokt2.jpg','assets/images/tripokt3.jpg'],
+        'Trip Oktober — Adventure and fun 💖'
+      )"><img src="assets/images/tripokt1.jpg" alt="Trip Oktober"></div>
+      <div class="scrap-card" onclick="openPopup(
+        ['assets/images/tripokt2.jpg','assets/images/tripokt3.jpg','assets/images/tripokt1.jpg',],
+        'Trip Oktober — Adventure and fun 💖'
+      )"><img src="assets/images/tripokt2.jpg" alt="Trip Oktober"></div>
+      <div class="scrap-card" onclick="openPopup(
+        ['assets/images/tripokt3.jpg','assets/images/tripokt1.jpg','assets/images/tripokt2.jpg',],
+        'Trip Oktober — Adventure and fun 💖'
+      )"><img src="assets/images/tripokt3.jpg" alt="Trip Oktober"></div>
+    </div>
+  </div>
+
+  <div class="scrap-journey">
+    <h2>Wisuda 🎓</h2>
+    <div class="photo-row">
+      <div class="scrap-card" onclick="openPopup(
+        ['assets/images/wisuda1.jpg','assets/images/wisuda2.jpg','assets/images/wisuda3.jpg','assets/images/wisuda4.jpg'],
+        'Graduation Day — Proud and happy 💖'
+      )"><img src="assets/images/wisuda1.jpg" alt="Wisuda"></div>
+      <div class="scrap-card" onclick="openPopup(
+        ['assets/images/wisuda2.jpg','assets/images/wisuda3.jpg','assets/images/wisuda4.jpg','assets/images/wisuda1.jpg'],
+        'Graduation Day — Proud and happy 💖'
+      )"><img src="assets/images/wisuda2.jpg" alt="Wisuda"></div>
+      <div class="scrap-card" onclick="openPopup(
+        ['assets/images/wisuda3.jpg','assets/images/wisuda4.jpg','assets/images/wisuda1.jpg','assets/images/wisuda2.jpg'],
+        'Graduation Day — Proud and happy 💖'
+      )"><img src="assets/images/wisuda3.jpg" alt="Wisuda"></div>
+      <div class="scrap-card" onclick="openPopup(
+        ['assets/images/wisuda4.jpg','assets/images/wisuda1.jpg','assets/images/wisuda2.jpg','assets/images/wisuda3.jpg'],
+        'Graduation Day — Proud and happy 💖'
+      )"><img src="assets/images/wisuda4.jpg" alt="Wisuda"></div>
+    </div>
+  </div>
+
+  <a href="menu.html" class="back-menu">← Back to Menu</a>
+</div>
+
+<!-- Popup -->
+<div class="popup" id="popup">
+  <div class="popup-box">
+    <img id="popupImg" src="" alt="Photo">
+    <p id="popupCaption"></p>
+    <div>
+      <button onclick="prevPhoto()">⬅️</button>
+      <button onclick="nextPhoto()">➡️</button>
+    </div>
+    <button class="close-btn" onclick="closePopup()">Close</button>
+  </div>
+</div>
+
+<script>
+let currentJourneyPhotos = [];
+let currentIndex = 0;
+let currentCaption = '';
+
+function openPopup(journeyPhotos, caption, startIndex = 0) {
+  currentJourneyPhotos = journeyPhotos;
+  currentIndex = startIndex;
+  currentCaption = caption;
+  updatePopup();
+  document.getElementById("popup").style.display = "flex";
+}
+
+function updatePopup() {
+  document.getElementById("popupImg").src = currentJourneyPhotos[currentIndex];
+  document.getElementById("popupCaption").innerText = currentCaption;
+}
+
+function nextPhoto() {
+  currentIndex = (currentIndex + 1) % currentJourneyPhotos.length;
+  updatePopup();
+}
+
+function prevPhoto() {
+  currentIndex = (currentIndex - 1 + currentJourneyPhotos.length) % currentJourneyPhotos.length;
+  updatePopup();
+}
+
+function closePopup() {
+  document.getElementById("popup").style.display = "none";
+}
+
+/* Floating Hearts */
+function createHeart() {
+  const heart = document.createElement("div");
+  heart.className = "heart";
+  heart.innerHTML = "💗";
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.animationDuration = 4 + Math.random() * 4 + "s";
+  document.body.appendChild(heart);
+  setTimeout(() => heart.remove(), 8000);
+}
+setInterval(createHeart, 400);
+</script>
+
+</body>
+</html>
